@@ -111,10 +111,12 @@ public class MeetingStepDefs {
                 eventDetailsValidations.getMeetingDetails(timeLabel),
                 is(equalTo(timeLabel)));
 
+        int nInvitees = (int) Serenity.sessionVariableCalled("invitees")
+                .toString().chars().filter(ch -> ch == ',').count() + 1;
+
         assertThat("Number of invitees",
                 eventDetailsValidations.getInviteesDetails(),
-                is(equalTo("Invitees, " + Serenity.sessionVariableCalled("invitees")
-                        .toString().chars().filter(ch -> ch == ',').count() + 1)));
+                is(equalTo("Invitees, " + nInvitees)));
 
     }
 }
