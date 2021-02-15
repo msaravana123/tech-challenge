@@ -137,7 +137,7 @@ public class SurferStepDefs {
         HashMap<String, ResponseBody> weatherForecasts = Serenity.sessionVariableCalled("weatherForecasts");
         List<Map<String, String>> beaches = Serenity.sessionVariableCalled("beaches");
         for (String date : datesForSurfing) {
-            LOGGER.info("Top "+ count +" Beaches for Date = " + date);
+            LOGGER.info("Top " + count + " Beaches for Date = " + date);
             ArrayList<String> eligibleBeaches = surfingPrefs.get(date);
             int top = 0;
             for (int i = 0; i < beaches.size(); i++) {
@@ -149,17 +149,21 @@ public class SurferStepDefs {
                                 weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath().get("lat"),
                                 weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath().get("lon")));
 
-                        assertThat("Temperature is between set value",
-                                weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath()
-                                        .get("data.find{it.datetime == '" + date + "'}.temp"),
-                                is(both(greaterThan(Serenity.sessionVariableCalled("minTemp")))
-                                        .and(lessThan(Serenity.sessionVariableCalled("maxTemp")))));
+                        float temp = Float.parseFloat(weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath()
+                                .get("data.find{it.datetime == '" + date + "'}.temp").toString());
+                        float minTemp = Float.parseFloat(Serenity.sessionVariableCalled("minTemp").toString());
+                        float maxTemp = Float.parseFloat(Serenity.sessionVariableCalled("maxTemp").toString());
 
-                        assertThat("Wind Speed is between set value",
-                                weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath()
-                                        .get("data.find{it.datetime == '" + date + "'}.wind_spd"),
-                                is(both(greaterThan(Serenity.sessionVariableCalled("minSpeed")))
-                                        .and(lessThan(Serenity.sessionVariableCalled("maxSpeed")))));
+                        assertThat("Temperature is between set value",
+                                temp, is(both(greaterThan(minTemp)).and(lessThan(maxTemp))));
+
+                        float windSpeed = Float.parseFloat(weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath()
+                                .get("data.find{it.datetime == '" + date + "'}.wind_spd").toString());
+                        float minSpeed = Float.parseFloat(Serenity.sessionVariableCalled("minSpeed").toString());
+                        float maxSpeed = Float.parseFloat(Serenity.sessionVariableCalled("maxSpeed").toString());
+
+                        assertThat("Wind Speed is between set value", windSpeed,
+                                is(both(greaterThan(minSpeed)).and(lessThan(maxSpeed))));
 
                         assertThat("UV is less than set value",
                                 Float.parseFloat(weatherForecasts.get(beaches.get(i).get("Beach")).jsonPath()

@@ -15,4 +15,4 @@ Feature: Create a recurring meeting using Native iOS Calendar App.
     Examples:
       | Day    | Title    | From    | To      | Months | Invitees                                        |
       | Friday | Workshop | 9:30 am | 1:30 pm | 3      | test1@gmail.com,test2@gmail.com                 |
-      | Monday | Stand Up | 9:00 am | 9:15 am | 3      | test1@gmail.com,test2@gmail.com,test3@gmail.com |
+      | Monday | Stand Up | 9:30 am | 9:45 am | 3      | test1@gmail.com,test2@gmail.com,test3@gmail.com |
